@@ -25,6 +25,8 @@ public class WorldRenderer implements World.Observer {
   private Sprite mediumDamageBrickSprite;
   private Sprite highDamageBrickSprite;
 
+  private int maxBrickStrength;
+
   public WorldRenderer(World world) {
     this.world = world;
 
@@ -52,9 +54,9 @@ public class WorldRenderer implements World.Observer {
     for (int i = 0; i < world.getBricks().size; i++) {
       Brick brick = world.getBricks().get(i);
       Sprite brickSprite;
-      if (brick.getStrength() > 100 * 0.66) {
+      if (brick.getStrength() > maxBrickStrength * 0.66) {
         brickSprite = noDamageBrickSprite;
-      } else if (brick.getStrength() >= 100 * 0.33) {
+      } else if (brick.getStrength() >= maxBrickStrength * 0.33) {
         brickSprite = mediumDamageBrickSprite;
       } else {
         brickSprite = highDamageBrickSprite;
@@ -120,6 +122,8 @@ public class WorldRenderer implements World.Observer {
       x = level.getInt("sprite.brick.damage.high.x");
       y = level.getInt("sprite.brick.damage.high.y");
       highDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
+
+      maxBrickStrength = level.getInt("brick.strength");
     }
   }
 }
