@@ -18,4 +18,8 @@ public class Ball extends GameObject {
   public void reverseVelocityX() {
     velocity.set(-velocity.x, velocity.y);
   }
+
+  public void reverseVelocityY() {
+    velocity.set(velocity.x, -velocity.y);
+  }
 }

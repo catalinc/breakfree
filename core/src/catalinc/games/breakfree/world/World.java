@@ -75,7 +75,7 @@ public class World {
     for (int i = 0; i < bricks.size; i++) {
       Brick brick = bricks.get(i);
       if (brick.collides(ball)) {
-        ball.reverseVelocity();
+        ball.reverseVelocityY();
         brick.takeDamage(ball);
         if (brick.isDestroyed()) {
           notifyEvent(Event.BRICK_DESTROYED);
