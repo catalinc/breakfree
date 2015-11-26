@@ -6,10 +6,10 @@ import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorldObserver implements World.Observer {
+public class AudioPlayer implements World.Observer {
   private final Map<World.Event, Sound> soundForEvent;
 
-  public WorldObserver() {
+  public AudioPlayer() {
     soundForEvent = new HashMap<>();
     soundForEvent.put(World.Event.BALL_DROP,
         Gdx.audio.newSound(Gdx.files.internal("ball_drop.mp3")));
@@ -25,8 +25,6 @@ public class WorldObserver implements World.Observer {
     Sound sound = soundForEvent.get(event);
     if (sound != null) {
       sound.play();
-    }
-    if (event == World.Event.BALL_DROP) {
     }
   }
 

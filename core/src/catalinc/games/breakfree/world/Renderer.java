@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class WorldRenderer implements World.Observer {
+public class Renderer implements World.Observer {
   private final World world;
 
   private final SpriteBatch batch;
@@ -27,7 +27,7 @@ public class WorldRenderer implements World.Observer {
 
   private int maxBrickStrength;
 
-  public WorldRenderer(World world) {
+  public Renderer(World world) {
     this.world = world;
 
     camera = new OrthographicCamera();
