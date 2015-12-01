@@ -2,7 +2,7 @@ package catalinc.games.breakfree.screens;
 
 import catalinc.games.breakfree.BreakFreeGame;
 import catalinc.games.breakfree.world.World;
-import catalinc.games.breakfree.world.Renderer;
+import catalinc.games.breakfree.components.Renderer;
 import com.badlogic.gdx.ScreenAdapter;
 
 public class GameScreen extends ScreenAdapter {

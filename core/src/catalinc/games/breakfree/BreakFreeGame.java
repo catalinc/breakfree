@@ -2,14 +2,14 @@ package catalinc.games.breakfree;
 
 import catalinc.games.breakfree.screens.StartScreen;
 import catalinc.games.breakfree.world.World;
-import catalinc.games.breakfree.world.AudioPlayer;
-import catalinc.games.breakfree.world.Renderer;
+import catalinc.games.breakfree.components.Audio;
+import catalinc.games.breakfree.components.Renderer;
 import com.badlogic.gdx.Game;
 
 public class BreakFreeGame extends Game {
   private World world;
   private Renderer renderer;
-  private AudioPlayer audioPlayer;
+  private Audio audio;
 
   @Override
   public void create() {
@@ -18,8 +18,8 @@ public class BreakFreeGame extends Game {
     renderer = new Renderer(world);
     world.addObserver(renderer);
 
-    audioPlayer = new AudioPlayer();
-    world.addObserver(audioPlayer);
+    audio = new Audio();
+    world.addObserver(audio);
 
     world.loadLevel("level1.properties");
 
@@ -34,7 +34,7 @@ public class BreakFreeGame extends Game {
   @Override
   public void dispose() {
     renderer.dispose();
-    audioPlayer.dispose();
+    audio.dispose();
   }
 
   public World getWorld() {

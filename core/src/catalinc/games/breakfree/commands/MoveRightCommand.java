@@ -1,6 +1,6 @@
 package catalinc.games.breakfree.commands;
 
-import catalinc.games.breakfree.objects.GameObject;
+import catalinc.games.breakfree.entities.GameObject;
 import catalinc.games.breakfree.world.World;
 
 public class MoveRightCommand extends MoveCommand {

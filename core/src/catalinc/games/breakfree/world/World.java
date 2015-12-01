@@ -1,9 +1,9 @@
 package catalinc.games.breakfree.world;
 
 import catalinc.games.breakfree.commands.Command;
-import catalinc.games.breakfree.objects.Ball;
-import catalinc.games.breakfree.objects.Brick;
-import catalinc.games.breakfree.objects.Paddle;
+import catalinc.games.breakfree.entities.Ball;
+import catalinc.games.breakfree.entities.Brick;
+import catalinc.games.breakfree.entities.Paddle;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.LinkedList;

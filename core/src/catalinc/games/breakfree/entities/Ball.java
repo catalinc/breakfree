@@ -1,4 +1,4 @@
-package catalinc.games.breakfree.objects;
+package catalinc.games.breakfree.entities;
 
 public class Ball extends GameObject {
   private float damage;
