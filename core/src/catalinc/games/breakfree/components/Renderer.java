@@ -6,12 +6,14 @@ import catalinc.games.breakfree.entities.Paddle;
 import catalinc.games.breakfree.world.Level;
 import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class Renderer implements World.Observer {
   private final World world;
@@ -35,8 +37,16 @@ public class Renderer implements World.Observer {
     camera = new OrthographicCamera();
     batch = new SpriteBatch();
 
-    font = new BitmapFont();
     texture = new Texture(Gdx.files.internal("sprite_sheet.png"));
+
+    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansMono.ttf"));
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    parameter.size = 24;
+    parameter.color = Color.GREEN;
+    parameter.minFilter = Texture.TextureFilter.Linear;
+    parameter.magFilter = Texture.TextureFilter.Linear;
+    font = generator.generateFont(parameter);
+    generator.dispose();
 
     Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
   }

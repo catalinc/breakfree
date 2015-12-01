@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Align;
 
 public class StartScreen extends GameScreen {
   public StartScreen(BreakFreeGame game) {
@@ -20,8 +21,7 @@ public class StartScreen extends GameScreen {
     BitmapFont font = renderer.getFont();
 
     batch.begin();
-    font.draw(batch, "Welcome to BreakFree!!! ", world.getWidth() / 2 - 50, world.getHeight() / 2 + 50);
-    font.draw(batch, "Press any key to start", world.getWidth() / 2 - 50, world.getHeight() / 2);
+    font.draw(batch, "Press any key to start", 0, world.getWidth() / 2, world.getWidth(), Align.center, false);
     batch.end();
 
     if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
