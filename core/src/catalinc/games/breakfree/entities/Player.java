@@ -22,7 +22,7 @@ public class Player extends GameObject {
         this.lives = lives;
     }
 
-    public void looseOneLife() {
+    public void loseOneLife() {
         if (this.lives > 0) {
             this.lives--;
         }

@@ -93,7 +93,7 @@ public class World {
 
         if (ball.getY() < 0) {
             notifyEvent(Event.BALL_DROP);
-            player.looseOneLife();
+            player.loseOneLife();
             setupNewRound();
             return;
         }
