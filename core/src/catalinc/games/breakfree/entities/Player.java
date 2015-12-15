@@ -8,12 +8,7 @@ public class Player extends GameObject {
         this.lives = 0;
         this.score = 0;
     }
-
-    public Player(Player other) {
-        this.lives = other.lives;
-        this.score = other.score;
-    }
-
+    remo
     public int getLives() {
         return lives;
     }
