@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
-public class StartScreen extends GameScreen {
-    public StartScreen(BreakFreeGame game) {
+public class PlayerLostScreen extends GameScreen {
+    public PlayerLostScreen(BreakFreeGame game) {
         super(game);
     }
 
@@ -21,13 +21,18 @@ public class StartScreen extends GameScreen {
         BitmapFont font = renderer.getFont();
 
         batch.begin();
-        font.draw(batch, "Press any key to start", 0,
-                Gdx.graphics.getHeight() / 2,
-                Gdx.graphics.getWidth(), Align.center, false);
+        font.draw(
+                batch, "You lost. Sorry :-(. Press 'R' to restart or 'Q' to exit.",
+                0, world.getWidth() / 2, world.getWidth(), Align.center, false);
         batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             game.setScreen(new GameplayScreen(game));
         }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            Gdx.app.exit();
+        }
     }
+
 }

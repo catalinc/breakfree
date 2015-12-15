@@ -7,21 +7,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class GameplayScreen extends GameScreen {
-  public GameplayScreen(BreakFreeGame game) {
-    super(game);
-  }
+    public GameplayScreen(BreakFreeGame game) {
+        super(game);
 
-  @Override
-  public void render(float delta) {
-    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-      world.addCommand(new MoveLeftCommand(world, delta, world.getPaddle()));
+        world.loadLevel("level1.properties");
     }
 
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-      world.addCommand(new MoveRightCommand(world, delta, world.getPaddle()));
-    }
+    @Override
+    public void render(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            world.addCommand(new MoveLeftCommand(world, delta, world.getPlayer()));
+        }
 
-    world.update(delta);
-    renderer.render();
-  }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            world.addCommand(new MoveRightCommand(world, delta, world.getPlayer()));
+        }
+
+        world.update(delta);
+        renderer.render();
+
+        if (world.playerLost()) {
+            game.setScreen(new PlayerLostScreen(game));
+        }
+        if (world.playerWon()) {
+            game.setScreen(new PlayerWonScreen(game));
+        }
+    }
 }

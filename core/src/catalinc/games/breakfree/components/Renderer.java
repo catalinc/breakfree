@@ -2,7 +2,7 @@ package catalinc.games.breakfree.components;
 
 import catalinc.games.breakfree.entities.Ball;
 import catalinc.games.breakfree.entities.Brick;
-import catalinc.games.breakfree.entities.Paddle;
+import catalinc.games.breakfree.entities.Player;
 import catalinc.games.breakfree.world.Level;
 import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Gdx;
@@ -14,128 +14,137 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.Align;
 
 public class Renderer implements World.Observer {
-  private final World world;
+    private final World world;
 
-  private final SpriteBatch batch;
-  private final OrthographicCamera camera;
-  private final BitmapFont font;
-  private final Texture texture;
+    private final SpriteBatch batch;
+    private final OrthographicCamera camera;
+    private final BitmapFont font;
+    private final Texture texture;
 
-  private Sprite paddleSprite;
-  private Sprite ballSprite;
-  private Sprite noDamageBrickSprite;
-  private Sprite mediumDamageBrickSprite;
-  private Sprite highDamageBrickSprite;
+    private Sprite playerSprite;
+    private Sprite ballSprite;
+    private Sprite noDamageBrickSprite;
+    private Sprite mediumDamageBrickSprite;
+    private Sprite highDamageBrickSprite;
 
-  private int maxBrickStrength;
+    private int maxBrickStrength;
 
-  public Renderer(World world) {
-    this.world = world;
+    public Renderer(World world) {
+        this.world = world;
 
-    camera = new OrthographicCamera();
-    batch = new SpriteBatch();
+        camera = new OrthographicCamera(world.getWidth(), world.getHeight());
+        batch = new SpriteBatch();
 
-    texture = new Texture(Gdx.files.internal("sprite_sheet.png"));
+        texture = new Texture(Gdx.files.internal("sprite_sheet.png"));
 
-    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansMono.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    parameter.size = 24;
-    parameter.color = Color.GREEN;
-    parameter.minFilter = Texture.TextureFilter.Linear;
-    parameter.magFilter = Texture.TextureFilter.Linear;
-    font = generator.generateFont(parameter);
-    generator.dispose();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansMono.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 16;
+        parameter.color = Color.GREEN;
+        parameter.minFilter = Texture.TextureFilter.Linear;
+        parameter.magFilter = Texture.TextureFilter.Linear;
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
-    Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
-  }
-
-  public void render() {
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-    batch.setProjectionMatrix(camera.combined);
-    batch.begin();
-
-    paddleSprite.setPosition(world.getPaddle().getX(), world.getPaddle().getY());
-    paddleSprite.draw(batch);
-
-    ballSprite.setPosition(world.getBall().getX(), world.getBall().getY());
-    ballSprite.draw(batch);
-
-    for (int i = 0; i < world.getBricks().size; i++) {
-      Brick brick = world.getBricks().get(i);
-      Sprite brickSprite;
-      if (brick.getStrength() > maxBrickStrength * 0.66) {
-        brickSprite = noDamageBrickSprite;
-      } else if (brick.getStrength() >= maxBrickStrength * 0.33) {
-        brickSprite = mediumDamageBrickSprite;
-      } else {
-        brickSprite = highDamageBrickSprite;
-      }
-      brickSprite.setPosition(brick.getX(), brick.getY());
-      brickSprite.draw(batch);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
     }
 
-    batch.end();
-  }
+    public void render() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-  public SpriteBatch getBatch() {
-    return batch;
-  }
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
 
-  public BitmapFont getFont() {
-    return font;
-  }
+        batch.begin();
 
-  public void dispose() {
-    texture.dispose();
-    batch.dispose();
-  }
+        Player player = world.getPlayer();
+        playerSprite.setPosition(player.getX(), player.getY());
+        playerSprite.draw(batch);
 
-  @Override
-  public void onNotify(World.Event event) {
-    if (event == World.Event.LEVEL_LOADED) {
-      camera.setToOrtho(false, world.getWidth(), world.getHeight());
-      camera.update();
-      batch.setProjectionMatrix(camera.combined);
+        Ball ball = world.getBall();
+        ballSprite.setPosition(ball.getX(), ball.getY());
+        ballSprite.draw(batch);
 
-      int x, y;
-      Level level = world.getLevel();
+        for (int i = 0; i < world.getBricks().size; i++) {
+            Brick brick = world.getBricks().get(i);
+            Sprite brickSprite;
+            if (brick.getStrength() > maxBrickStrength * 0.66) {
+                brickSprite = noDamageBrickSprite;
+            } else if (brick.getStrength() >= maxBrickStrength * 0.33) {
+                brickSprite = mediumDamageBrickSprite;
+            } else {
+                brickSprite = highDamageBrickSprite;
+            }
+            brickSprite.setPosition(brick.getX(), brick.getY());
+            brickSprite.draw(batch);
+        }
 
-      Paddle paddle = world.getPaddle();
-      int paddleWidth = (int) paddle.getWidth();
-      int paddleHeight = (int) paddle.getHeight();
+        String header = String.format("Level: %s | Score: %d | Lives: %d",
+                world.getLevel().getName(), player.getScore(), player.getLives());
+        font.draw(batch, header, 1, world.getHeight() - 1, world.getWidth(), Align.center, false);
 
-      x = level.getInt("sprite.paddle.x");
-      y = level.getInt("sprite.paddle.y");
-      paddleSprite = new Sprite(texture, x, y, paddleWidth, paddleHeight);
-
-      Ball ball = world.getBall();
-      int ballWidth = (int) ball.getWidth();
-      int ballHeight = (int) ball.getHeight();
-
-      x = level.getInt("sprite.ball.x");
-      y = level.getInt("sprite.ball.y");
-      ballSprite = new Sprite(texture, x, y, ballWidth, ballHeight);
-
-      Brick brick = world.getBricks().get(0);
-      int brickWidth = (int) brick.getWidth();
-      int brickHeight = (int) brick.getHeight();
-
-      x = level.getInt("sprite.brick.damage.none.x");
-      y = level.getInt("sprite.brick.damage.none.y");
-      noDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
-
-      x = level.getInt("sprite.brick.damage.medium.x");
-      y = level.getInt("sprite.brick.damage.medium.y");
-      mediumDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
-
-      x = level.getInt("sprite.brick.damage.high.x");
-      y = level.getInt("sprite.brick.damage.high.y");
-      highDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
-
-      maxBrickStrength = level.getInt("brick.strength");
+        batch.end();
     }
-  }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public void dispose() {
+        texture.dispose();
+        batch.dispose();
+    }
+
+    @Override
+    public void onNotify(World.Event event) {
+        if (event == World.Event.LEVEL_LOADED) {
+            camera.setToOrtho(false, world.getWidth(), world.getHeight());
+            camera.update();
+            batch.setProjectionMatrix(camera.combined);
+
+            int x, y;
+            Level level = world.getLevel();
+
+            Player player = world.getPlayer();
+            int playerWidth = (int) player.getWidth();
+            int playerHeight = (int) player.getHeight();
+
+            x = level.getInt("sprite.player.x");
+            y = level.getInt("sprite.player.y");
+            playerSprite = new Sprite(texture, x, y, playerWidth, playerHeight);
+
+            Ball ball = world.getBall();
+            int ballWidth = (int) ball.getWidth();
+            int ballHeight = (int) ball.getHeight();
+
+            x = level.getInt("sprite.ball.x");
+            y = level.getInt("sprite.ball.y");
+            ballSprite = new Sprite(texture, x, y, ballWidth, ballHeight);
+
+            Brick brick = world.getBricks().get(0);
+            int brickWidth = (int) brick.getWidth();
+            int brickHeight = (int) brick.getHeight();
+
+            x = level.getInt("sprite.brick.damage.none.x");
+            y = level.getInt("sprite.brick.damage.none.y");
+            noDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
+
+            x = level.getInt("sprite.brick.damage.medium.x");
+            y = level.getInt("sprite.brick.damage.medium.y");
+            mediumDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
+
+            x = level.getInt("sprite.brick.damage.high.x");
+            y = level.getInt("sprite.brick.damage.high.y");
+            highDamageBrickSprite = new Sprite(texture, x, y, brickWidth, brickHeight);
+
+            maxBrickStrength = level.getInt("brick.strength");
+        }
+    }
 }

@@ -1,22 +1,22 @@
 package catalinc.games.breakfree.entities;
 
 public class Brick extends GameObject {
-  private float strength;
+    private float strength;
 
-  public Brick(float x, float y, float width, float height, float strength) {
-    super(x, y, width, height);
-    this.strength = strength;
-  }
+    public Brick(float x, float y, float width, float height, float strength) {
+        super(x, y, width, height);
+        this.strength = strength;
+    }
 
-  public float getStrength() {
-    return strength;
-  }
+    public float getStrength() {
+        return strength;
+    }
 
-  public void takeDamage(Ball ball) {
-    strength -= ball.getDamage();
-  }
+    public void takeDamage(Ball ball) {
+        strength -= ball.getDamage();
+    }
 
-  public boolean isDestroyed() {
-    return strength <= 0;
-  }
+    public boolean isDestroyed() {
+        return strength <= 0;
+    }
 }
