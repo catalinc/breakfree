@@ -82,8 +82,9 @@ public class Renderer implements World.Observer {
             brickSprite.draw(batch);
         }
 
-        String header = String.format("Level: %s | Score: %d | Lives: %d",
-                world.getLevel().getName(), player.getScore(), player.getLives());
+        Level level = world.getLevel();
+        String header = String.format("Level %d - %s | Score: %d | Lives: %d",
+                level.getIndex(), level.getName(), player.getScore(), player.getLives());
         font.draw(batch, header, 1, world.getHeight() - 1, world.getWidth(), Align.center, false);
 
         batch.end();

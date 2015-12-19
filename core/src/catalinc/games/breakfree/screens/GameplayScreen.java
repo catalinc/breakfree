@@ -10,7 +10,7 @@ public class GameplayScreen extends GameScreen {
     public GameplayScreen(BreakFreeGame game) {
         super(game);
 
-        world.loadLevel("levels/level1.properties");
+        world.loadLevel(1);
     }
 
     @Override

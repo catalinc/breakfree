@@ -4,19 +4,26 @@ import catalinc.games.breakfree.commands.Command;
 import catalinc.games.breakfree.entities.Ball;
 import catalinc.games.breakfree.entities.Brick;
 import catalinc.games.breakfree.entities.Player;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Queue;
 
 public class World {
-    private static final float MAX_BOUNCE_ANGLE = (float) (5 * Math.PI / 12); // 75 deg in rad
-
     private Level level;
 
     private int width;
     private int height;
+
+    private float maxBounceAngle;
+    private int maxLives;
+    private int maxLevel;
 
     private Player player;
     private Ball ball;
@@ -41,13 +48,12 @@ public class World {
     public World() {
         observers = new LinkedList<>();
         commands = new LinkedList<>();
+
+        load();
     }
 
-    public void loadLevel(String filename) {
-        level = new Level(filename);
-
-        width = level.getInt("world.width");
-        height = level.getInt("world.height");
+    public void loadLevel(int index) {
+        level = new Level("levels/level_" + index + ".properties");
 
         addPlayer();
         addBall();
@@ -118,7 +124,7 @@ public class World {
             float half = player.getWidth() / 2;
             float relativeIntersectX = player.getX() + half - (ball.getX() + ball.getWidth() / 2);
             float normalizedRelativeIntersectX = relativeIntersectX / half;
-            float bounceAngle = normalizedRelativeIntersectX * MAX_BOUNCE_ANGLE;
+            float bounceAngle = normalizedRelativeIntersectX * maxBounceAngle;
 
             float x = (float) -(ball.getSpeed() * Math.sin(bounceAngle));
             float y = (float) (ball.getSpeed() * Math.cos(bounceAngle));
@@ -131,7 +137,7 @@ public class World {
     }
 
     public boolean playerWon() {
-        return bricks.size == 0 && level.getIndex() == Level.MAX_LEVEL;
+        return bricks.size == 0 && level.getIndex() == maxLevel;
     }
 
     public Level getLevel() {
@@ -158,6 +164,23 @@ public class World {
         return height;
     }
 
+    private void load() {
+        Properties props = new Properties();
+        try {
+            try (Reader reader = Gdx.files.internal("world/world.properties").reader()) {
+                props.load(reader);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("unable to load world configuration: " + e.getMessage()) ;
+        }
+
+        width = Integer.parseInt(props.getProperty("width"));
+        height = Integer.parseInt(props.getProperty("height"));
+        maxBounceAngle = MathUtils.degreesToRadians * Integer.parseInt(props.getProperty("maxBounceAngle"));
+        maxLives = Integer.parseInt(props.getProperty("maxLives"));
+        maxLevel = Integer.parseInt(props.getProperty("maxLevel"));
+    }
+
     private void setupNewRound() {
         player.setVelocity(0, 0);
         player.setPosition((this.width - player.getWidth()) / 2, player.getHeight());
@@ -175,7 +198,7 @@ public class World {
         player.setSpeed(playerSpeed);
         player.setVelocity(0, 0);
         player.setPosition((this.width - playerWidth) / 2, playerHeight);
-        player.setLives(Level.MAX_PLAYER_LIVES);
+        player.setLives(maxLives);
     }
 
     private void addBall() {
