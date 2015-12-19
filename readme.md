@@ -8,4 +8,4 @@ _WIP_
 
 - More levels
 - Better sounds
-- Better win and lose screens
+- Better screens for win and lose

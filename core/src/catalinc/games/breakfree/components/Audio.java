@@ -14,13 +14,13 @@ public class Audio implements World.Observer {
     public Audio() {
         soundForEvent = new HashMap<>();
         soundForEvent.put(World.Event.BALL_DROP,
-                Gdx.audio.newSound(Gdx.files.internal("ball_drop.mp3")));
+                Gdx.audio.newSound(Gdx.files.internal("sounds/ball_drop.mp3")));
         soundForEvent.put(World.Event.BRICK_HIT,
-                Gdx.audio.newSound(Gdx.files.internal("brick_hit.mp3")));
+                Gdx.audio.newSound(Gdx.files.internal("sounds/brick_hit.mp3")));
         soundForEvent.put(World.Event.BRICK_DESTROYED,
-                Gdx.audio.newSound(Gdx.files.internal("brick_destroyed.mp3")));
+                Gdx.audio.newSound(Gdx.files.internal("sounds/brick_destroyed.mp3")));
         soundForEvent.put(World.Event.PADDLE_HIT,
-                Gdx.audio.newSound(Gdx.files.internal("brick_hit.mp3")));
+                Gdx.audio.newSound(Gdx.files.internal("sounds/brick_hit.mp3")));
     }
 
     public void onNotify(World.Event event) {

@@ -38,9 +38,9 @@ public class Renderer implements World.Observer {
         camera = new OrthographicCamera(world.getWidth(), world.getHeight());
         batch = new SpriteBatch();
 
-        texture = new Texture(Gdx.files.internal("sprite_sheet.png"));
+        texture = new Texture(Gdx.files.internal("world/sprite_sheet.png"));
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansMono.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("world/DroidSansMono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 16;
         parameter.color = Color.GREEN;
