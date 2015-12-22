@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
-public class StartScreen extends GameScreen {
-    public StartScreen(BreakFreeGame game) {
+public class LevelCompletedScreen extends GameScreen {
+
+    public LevelCompletedScreen(BreakFreeGame game) {
         super(game);
     }
 
@@ -21,13 +22,14 @@ public class StartScreen extends GameScreen {
         BitmapFont font = renderer.getFont();
 
         batch.begin();
-        font.draw(batch, "Press any key to start", 0,
-                Gdx.graphics.getHeight() / 2,
-                Gdx.graphics.getWidth(), Align.center, false);
+        font.draw(
+                batch, "Level completed. Press any key to continue.",
+                0, world.getWidth() / 2, world.getWidth(), Align.center, false);
+
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-            world.loadLevel(1);
+            world.loadNextLevel();
             game.setScreen(new GameplayScreen(game));
         }
     }

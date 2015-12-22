@@ -27,6 +27,10 @@ public class Player extends GameObject {
         return this.lives == 0;
     }
 
+    public boolean isAlive() {
+        return !isDead();
+    }
+
     public int getScore() {
         return score;
     }

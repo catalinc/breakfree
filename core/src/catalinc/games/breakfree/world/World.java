@@ -62,6 +62,15 @@ public class World {
         notifyEvent(Event.LEVEL_LOADED);
     }
 
+    public void loadNextLevel() {
+        int index = level != null ? level.getIndex() + 1 : 1;
+        loadLevel(index);
+    }
+
+    public boolean levelCompleted() {
+        return player.isAlive() && bricks.size == 0;
+    }
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -171,7 +180,7 @@ public class World {
                 props.load(reader);
             }
         } catch (IOException e) {
-            throw new RuntimeException("unable to load world configuration: " + e.getMessage()) ;
+            throw new RuntimeException("unable to load world configuration: " + e.getMessage());
         }
 
         width = Integer.parseInt(props.getProperty("width"));

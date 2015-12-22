@@ -9,8 +9,6 @@ import com.badlogic.gdx.Input;
 public class GameplayScreen extends GameScreen {
     public GameplayScreen(BreakFreeGame game) {
         super(game);
-
-        world.loadLevel(1);
     }
 
     @Override
@@ -31,6 +29,9 @@ public class GameplayScreen extends GameScreen {
         }
         if (world.playerWon()) {
             game.setScreen(new PlayerWonScreen(game));
+        }
+        if (world.levelCompleted()) {
+            game.setScreen(new LevelCompletedScreen(game));
         }
     }
 }
