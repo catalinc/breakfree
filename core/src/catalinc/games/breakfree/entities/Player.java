@@ -35,6 +35,10 @@ public class Player extends GameObject {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public void increaseScore(int amount) {
         this.score += amount;
     }

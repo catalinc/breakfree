@@ -11,10 +11,6 @@ public class Ball extends GameObject {
         this.damage = damage;
     }
 
-    public void reverseVelocity() {
-        velocity.scl(-1f);
-    }
-
     public void reverseVelocityX() {
         velocity.set(-velocity.x, velocity.y);
     }

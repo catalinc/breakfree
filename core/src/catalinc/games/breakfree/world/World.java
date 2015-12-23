@@ -46,18 +46,74 @@ public class World {
     }
 
     public World() {
+        Properties props = new Properties();
+        try {
+            try (Reader reader = Gdx.files.internal("world/world.properties").reader()) {
+                props.load(reader);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("unable to load world configuration: " + e.getMessage());
+        }
+
+        width = Integer.parseInt(props.getProperty("width"));
+        height = Integer.parseInt(props.getProperty("height"));
+        maxBounceAngle = MathUtils.degreesToRadians * Integer.parseInt(props.getProperty("maxBounceAngle"));
+        maxLives = Integer.parseInt(props.getProperty("maxLives"));
+        maxLevel = Integer.parseInt(props.getProperty("maxLevel"));
+
         observers = new LinkedList<>();
         commands = new LinkedList<>();
 
-        load();
+        player = new Player();
+        ball = new Ball();
+        bricks = new Array<>();
     }
 
     public void loadLevel(int index) {
         level = new Level("levels/level_" + index + ".properties");
 
-        addPlayer();
-        addBall();
-        addBricks();
+        int playerWidth = level.getInt("player.width");
+        int playerHeight = level.getInt("player.height");
+        float playerSpeed = level.getInt("player.speed");
+
+        player.setSize(playerWidth, playerHeight);
+        player.setSpeed(playerSpeed);
+        player.setVelocity(0, 0);
+        player.setPosition((this.width - playerWidth) / 2, playerHeight);
+        if (level.isFirst()) {
+            player.setLives(maxLives);
+            player.setScore(0);
+        }
+
+        int ballWidth = level.getInt("ball.width");
+        int ballHeight = level.getInt("ball.height");
+        float ballSpeed = level.getFloat("ball.speed");
+        float ballDamage = level.getFloat("ball.damage");
+
+        ball.setSize(ballWidth, ballHeight);
+        ball.setDamage(ballDamage);
+        ball.setSpeed(ballSpeed);
+        ball.setVelocity(0, ballSpeed);
+        ball.setPosition(player.getX() + (player.getWidth() - ballWidth) / 2, player.getHeight() + ballHeight);
+
+        int brickWidth = level.getInt("brick.width");
+        int brickHeight = level.getInt("brick.height");
+        float brickStrength = level.getFloat("brick.strength");
+        int brickWalls = level.getInt("brick.walls");
+
+        bricks.clear();
+        int bricksPerLine = width / brickWidth;
+        for (int i = 1; i <= brickWalls; i++) {
+            for (int j = 0; j < bricksPerLine; j++) {
+                Brick brick = new Brick(
+                        j * brickWidth,
+                        height - i * brickHeight - brickHeight,
+                        brickWidth,
+                        brickHeight,
+                        brickStrength);
+                bricks.add(brick);
+            }
+        }
 
         notifyEvent(Event.LEVEL_LOADED);
     }
@@ -124,7 +180,7 @@ public class World {
         }
 
         if (ball.getY() + ball.getHeight() > height) {
-            ball.reverseVelocity();
+            ball.reverseVelocityY();
         }
 
         if (player.collides(ball)) {
@@ -173,76 +229,11 @@ public class World {
         return height;
     }
 
-    private void load() {
-        Properties props = new Properties();
-        try {
-            try (Reader reader = Gdx.files.internal("world/world.properties").reader()) {
-                props.load(reader);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("unable to load world configuration: " + e.getMessage());
-        }
-
-        width = Integer.parseInt(props.getProperty("width"));
-        height = Integer.parseInt(props.getProperty("height"));
-        maxBounceAngle = MathUtils.degreesToRadians * Integer.parseInt(props.getProperty("maxBounceAngle"));
-        maxLives = Integer.parseInt(props.getProperty("maxLives"));
-        maxLevel = Integer.parseInt(props.getProperty("maxLevel"));
-    }
-
     private void setupNewRound() {
         player.setVelocity(0, 0);
         player.setPosition((this.width - player.getWidth()) / 2, player.getHeight());
         ball.setVelocity(0, ball.getSpeed());
         ball.setPosition(player.getX() + (player.getWidth() - ball.getWidth()) / 2, player.getHeight() + ball.getHeight());
-    }
-
-    private void addPlayer() {
-        int playerWidth = level.getInt("player.width");
-        int playerHeight = level.getInt("player.height");
-        float playerSpeed = level.getInt("player.speed");
-
-        player = new Player();
-        player.setSize(playerWidth, playerHeight);
-        player.setSpeed(playerSpeed);
-        player.setVelocity(0, 0);
-        player.setPosition((this.width - playerWidth) / 2, playerHeight);
-        player.setLives(maxLives);
-    }
-
-    private void addBall() {
-        int ballWidth = level.getInt("ball.width");
-        int ballHeight = level.getInt("ball.height");
-        float ballSpeed = level.getFloat("ball.speed");
-        float ballDamage = level.getFloat("ball.damage");
-
-        ball = new Ball();
-        ball.setSize(ballWidth, ballHeight);
-        ball.setDamage(ballDamage);
-        ball.setSpeed(ballSpeed);
-        ball.setVelocity(0, ballSpeed);
-        ball.setPosition(player.getX() + (player.getWidth() - ballWidth) / 2, player.getHeight() + ballHeight);
-    }
-
-    private void addBricks() {
-        int brickWidth = level.getInt("brick.width");
-        int brickHeight = level.getInt("brick.height");
-        float brickStrength = level.getFloat("brick.strength");
-        int brickWalls = level.getInt("brick.walls");
-
-        bricks = new Array<>();
-        int bricksPerLine = width / brickWidth;
-        for (int i = 1; i <= brickWalls; i++) {
-            for (int j = 0; j < bricksPerLine; j++) {
-                Brick brick = new Brick(
-                        j * brickWidth,
-                        height - i * brickHeight - brickHeight,
-                        brickWidth,
-                        brickHeight,
-                        brickStrength);
-                bricks.add(brick);
-            }
-        }
     }
 
     private void notifyEvent(Event event) {

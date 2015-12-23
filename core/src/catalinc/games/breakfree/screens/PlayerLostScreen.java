@@ -27,6 +27,7 @@ public class PlayerLostScreen extends GameScreen {
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+            world.loadLevel(1);
             game.setScreen(new GameplayScreen(game));
         }
 

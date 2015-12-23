@@ -8,7 +8,6 @@ import java.util.Properties;
 
 public class Level {
     private Properties props;
-    private String name;
     private int index;
     private int brickScorePoints;
 
@@ -21,17 +20,16 @@ public class Level {
         } catch (IOException e) {
             throw new RuntimeException("unable to load level data from " + filename + ": " + e.getMessage());
         }
-        this.name = getString("name");
         this.index = getInt("index");
         this.brickScorePoints = getInt("brick.score.points");
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getIndex() {
         return index;
+    }
+
+    public boolean isFirst() {
+        return index == 1;
     }
 
     public int getBrickScorePoints() {
@@ -44,9 +42,5 @@ public class Level {
 
     public float getFloat(String key) {
         return Float.valueOf(this.props.getProperty(key));
-    }
-
-    public String getString(String key) {
-        return this.props.getProperty(key);
     }
 }

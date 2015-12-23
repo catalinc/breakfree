@@ -83,8 +83,8 @@ public class Renderer implements World.Observer {
         }
 
         Level level = world.getLevel();
-        String header = String.format("Level %d - %s | Score: %d | Lives: %d",
-                level.getIndex(), level.getName(), player.getScore(), player.getLives());
+        String header = String.format("Level %d | Score: %d | Lives: %d",
+                level.getIndex(), player.getScore(), player.getLives());
         font.draw(batch, header, 1, world.getHeight() - 1, world.getWidth(), Align.center, false);
 
         batch.end();
