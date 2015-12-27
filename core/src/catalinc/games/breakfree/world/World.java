@@ -15,6 +15,18 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 
+/**
+ * Handles state, physics and level loading.
+ *
+ * World data is loaded from {@code assets/world/world.properties} file.
+ *
+ * World data consist of:
+ *
+ * - width and height
+ * - number of lives for player at startup
+ * - max bounce angle for ball colliding with player's paddle
+ * - number of levels
+ */
 public class World {
     private Level level;
 

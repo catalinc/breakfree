@@ -1,5 +1,6 @@
 package catalinc.games.breakfree.entities;
 
+/** The paddle. */
 public class Player extends GameObject {
     private int lives;
     private int score;

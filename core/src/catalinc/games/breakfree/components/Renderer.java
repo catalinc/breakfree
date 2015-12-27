@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
 
+/** {@link World} renderer. */
 public class Renderer implements World.Observer {
     private final World world;
 

@@ -3,6 +3,7 @@ package catalinc.games.breakfree.commands;
 import catalinc.games.breakfree.entities.GameObject;
 import catalinc.games.breakfree.world.World;
 
+/** Moves a {@link GameObject} to right in straight line. */
 public class MoveRightCommand extends MoveCommand {
     public MoveRightCommand(World world, float delta, GameObject actor) {
         super(world, delta, actor);

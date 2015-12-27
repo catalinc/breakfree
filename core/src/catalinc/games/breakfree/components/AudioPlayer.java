@@ -7,11 +7,11 @@ import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Audio implements World.Observer {
+public class AudioPlayer implements World.Observer {
     private final Map<World.Event, Sound> soundForEvent;
     private boolean muted;
 
-    public Audio() {
+    public AudioPlayer() {
         soundForEvent = new HashMap<>();
         soundForEvent.put(World.Event.BALL_DROP,
                 Gdx.audio.newSound(Gdx.files.internal("sounds/ball_drop.mp3")));

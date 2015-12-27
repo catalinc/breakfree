@@ -6,6 +6,19 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
+/**
+ * Represents a game level.
+ *
+ * Each level is identified by an index and level's data is loaded from {@code assets/level/level_<index>.properties file}.
+ *
+ * Level data consist of:
+ *
+ * - X, Y texture coordinates for brick states, player and ball sprites
+ * - ball and player speeds
+ * - number of brick walls
+ * - brick strength and ball damage
+ * - number of points received for destroying a brick
+ */
 public class Level {
     private Properties props;
     private int index;
