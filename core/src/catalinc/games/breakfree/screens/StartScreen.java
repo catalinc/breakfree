@@ -27,7 +27,7 @@ public class StartScreen extends GameScreen {
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-            world.loadLevel(1);
+            world.loadLevel(3  );
             game.setScreen(new GameplayScreen(game));
         }
     }
