@@ -13,12 +13,12 @@ public class BreakFreeGame extends Game {
 
     @Override
     public void create() {
-        world = new World();
+        world = new World("game.properties");
 
         renderer = new Renderer(world);
         world.addObserver(renderer);
 
-        audioPlayer = new AudioPlayer();
+        audioPlayer = new AudioPlayer("sounds.properties");
         world.addObserver(audioPlayer);
 
         setScreen(new StartScreen(this));

@@ -4,23 +4,33 @@ import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class AudioPlayer implements World.Observer {
     private final Map<World.Event, Sound> soundForEvent;
     private boolean muted;
 
-    public AudioPlayer() {
+    public AudioPlayer(String configFilePath) {
+        Properties props = new Properties();
+        try {
+            try (Reader reader = Gdx.files.internal(configFilePath).reader()) {
+                props.load(reader);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("unable to load audio player configuration: " + e.getMessage());
+        }
+
         soundForEvent = new HashMap<>();
-        soundForEvent.put(World.Event.BALL_DROP,
-                Gdx.audio.newSound(Gdx.files.internal("sounds/ball_drop.mp3")));
-        soundForEvent.put(World.Event.BRICK_HIT,
-                Gdx.audio.newSound(Gdx.files.internal("sounds/brick_hit.mp3")));
-        soundForEvent.put(World.Event.BRICK_DESTROYED,
-                Gdx.audio.newSound(Gdx.files.internal("sounds/brick_destroyed.mp3")));
-        soundForEvent.put(World.Event.PADDLE_HIT,
-                Gdx.audio.newSound(Gdx.files.internal("sounds/brick_hit.mp3")));
+        for (String name : props.stringPropertyNames()) {
+            String event = name.substring(name.lastIndexOf('.') + 1);
+            String path = props.getProperty(name);
+                soundForEvent.put(World.Event.valueOf(event),
+                        Gdx.audio.newSound(Gdx.files.internal(path)));
+        }
     }
 
     public void onNotify(World.Event event) {

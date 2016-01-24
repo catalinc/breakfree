@@ -16,7 +16,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
 
-/** {@link World} renderer. */
+/**
+ * {@link World} renderer.
+ */
 public class Renderer implements World.Observer {
     private final World world;
 
@@ -39,9 +41,9 @@ public class Renderer implements World.Observer {
         camera = new OrthographicCamera(world.getWidth(), world.getHeight());
         batch = new SpriteBatch();
 
-        texture = new Texture(Gdx.files.internal("world/sprite_sheet.png"));
+        texture = new Texture(Gdx.files.internal(world.getSpriteSheetPath()));
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("world/DroidSansMono.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(world.getFontPath()));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 16;
         parameter.color = Color.GREEN;

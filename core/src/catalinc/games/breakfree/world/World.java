@@ -18,14 +18,7 @@ import java.util.Queue;
 /**
  * Handles state, physics and level loading.
  *
- * World data is loaded from {@code assets/world/world.properties} file.
- *
- * World data consist of:
- *
- * - width and height
- * - number of lives for player at startup
- * - max bounce angle for ball colliding with player's paddle
- * - number of levels
+ * World data is loaded from {@code assets/game.properties} file.
  */
 public class World {
     private Level level;
@@ -40,6 +33,9 @@ public class World {
     private Player player;
     private Ball ball;
     private Array<Brick> bricks;
+
+    private final String spriteSheetPath;
+    private final String fontPath;
 
     private final List<Observer> observers;
     private final Queue<Command> commands;
@@ -57,21 +53,24 @@ public class World {
         void onNotify(Event event);
     }
 
-    public World() {
+    public World (String configFilePath) {
         Properties props = new Properties();
         try {
-            try (Reader reader = Gdx.files.internal("world/world.properties").reader()) {
+            try (Reader reader = Gdx.files.internal(configFilePath).reader()) {
                 props.load(reader);
             }
         } catch (IOException e) {
             throw new RuntimeException("unable to load world configuration: " + e.getMessage());
         }
 
-        width = Integer.parseInt(props.getProperty("width"));
-        height = Integer.parseInt(props.getProperty("height"));
-        maxBounceAngle = MathUtils.degreesToRadians * Integer.parseInt(props.getProperty("maxBounceAngle"));
-        maxLives = Integer.parseInt(props.getProperty("maxLives"));
-        maxLevel = Integer.parseInt(props.getProperty("maxLevel"));
+        width = Integer.parseInt(props.getProperty("game.world.width"));
+        height = Integer.parseInt(props.getProperty("game.world.height"));
+        maxBounceAngle = MathUtils.degreesToRadians * Integer.parseInt(props.getProperty("game.phys.maxBounceAngle"));
+        maxLives = Integer.parseInt(props.getProperty("game.player.maxLives"));
+        maxLevel = Integer.parseInt(props.getProperty("game.player.maxLevel"));
+
+        spriteSheetPath = props.getProperty("game.ui.spriteSheet");
+        fontPath = props.getProperty("game.ui.font");
 
         observers = new LinkedList<>();
         commands = new LinkedList<>();
@@ -239,6 +238,14 @@ public class World {
 
     public int getHeight() {
         return height;
+    }
+
+    public String getSpriteSheetPath() {
+        return spriteSheetPath;
+    }
+
+    public String getFontPath() {
+        return fontPath;
     }
 
     private void setupNewRound() {
