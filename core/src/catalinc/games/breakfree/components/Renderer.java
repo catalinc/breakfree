@@ -45,7 +45,7 @@ public class Renderer implements World.Observer {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(world.getFontPath()));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 16;
+        parameter.size = 22;
         parameter.color = Color.GREEN;
         parameter.minFilter = Texture.TextureFilter.Linear;
         parameter.magFilter = Texture.TextureFilter.Linear;

@@ -21,9 +21,8 @@ public class PlayerLostScreen extends GameScreen {
         BitmapFont font = renderer.getFont();
 
         batch.begin();
-        font.draw(
-                batch, "You lost. Sorry :-(. Press 'R' to restart or 'Q' to exit.",
-                0, world.getWidth() / 2, world.getWidth(), Align.center, false);
+        font.draw(batch, "You lost. Sorry :-(. Press 'R' to restart or 'Q' to exit.", 0,
+                world.getHeight() / 2, world.getWidth(), Align.center, false);
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
