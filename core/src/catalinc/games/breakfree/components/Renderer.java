@@ -3,6 +3,7 @@ package catalinc.games.breakfree.components;
 import catalinc.games.breakfree.entities.Ball;
 import catalinc.games.breakfree.entities.Brick;
 import catalinc.games.breakfree.entities.Player;
+import catalinc.games.breakfree.world.Event;
 import catalinc.games.breakfree.world.Level;
 import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Gdx;
@@ -107,8 +108,8 @@ public class Renderer implements World.Observer {
     }
 
     @Override
-    public void onNotify(World.Event event) {
-        if (event == World.Event.LEVEL_LOADED) {
+    public void onNotify(Event event) {
+        if (event == Event.LEVEL_LOADED) {
             camera.setToOrtho(false, world.getWidth(), world.getHeight());
             camera.update();
             batch.setProjectionMatrix(camera.combined);

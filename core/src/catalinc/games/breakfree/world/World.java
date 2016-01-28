@@ -5,6 +5,7 @@ import catalinc.games.breakfree.entities.Ball;
 import catalinc.games.breakfree.entities.Brick;
 import catalinc.games.breakfree.entities.Player;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
@@ -40,14 +41,7 @@ public class World {
     private final List<Observer> observers;
     private final Queue<Command> commands;
 
-    public enum Event {
-        BALL_DROP,
-        PADDLE_HIT,
-        BRICK_HIT,
-        BRICK_DESTROYED,
-        ALL_BRICKS_DESTROYED,
-        LEVEL_LOADED
-    }
+    private boolean paused;
 
     public interface Observer {
         void onNotify(Event event);
@@ -78,6 +72,8 @@ public class World {
         player = new Player();
         ball = new Ball();
         bricks = new Array<>();
+
+        paused = false;
     }
 
     public void loadLevel(int index) {
@@ -149,8 +145,10 @@ public class World {
     public void update(float delta) {
         while (!commands.isEmpty()) {
             Command command = commands.poll();
-            command.execute();
+            command.execute(this);
         }
+
+        if (paused) return;
 
         ball.update(delta);
 
@@ -246,6 +244,18 @@ public class World {
 
     public String getFontPath() {
         return fontPath;
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 
     private void setupNewRound() {

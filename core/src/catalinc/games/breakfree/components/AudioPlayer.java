@@ -1,5 +1,6 @@
 package catalinc.games.breakfree.components;
 
+import catalinc.games.breakfree.world.Event;
 import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class AudioPlayer implements World.Observer {
-    private final Map<World.Event, Sound> soundForEvent;
+    private final Map<Event, Sound> soundForEvent;
     private boolean muted;
 
     public AudioPlayer(String configFilePath) {
@@ -28,12 +29,12 @@ public class AudioPlayer implements World.Observer {
         for (String name : props.stringPropertyNames()) {
             String event = name.substring(name.lastIndexOf('.') + 1);
             String path = props.getProperty(name);
-                soundForEvent.put(World.Event.valueOf(event),
+                soundForEvent.put(Event.valueOf(event),
                         Gdx.audio.newSound(Gdx.files.internal(path)));
         }
     }
 
-    public void onNotify(World.Event event) {
+    public void onNotify(Event event) {
         if (muted) return;
 
         Sound sound = soundForEvent.get(event);
