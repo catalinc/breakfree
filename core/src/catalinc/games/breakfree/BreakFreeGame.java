@@ -1,8 +1,8 @@
 package catalinc.games.breakfree;
 
-import catalinc.games.breakfree.components.AudioPlayer;
-import catalinc.games.breakfree.components.Renderer;
 import catalinc.games.breakfree.screens.StartScreen;
+import catalinc.games.breakfree.world.AudioPlayer;
+import catalinc.games.breakfree.world.Renderer;
 import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Game;
 
@@ -41,5 +41,9 @@ public class BreakFreeGame extends Game {
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }

@@ -1,4 +1,4 @@
-package catalinc.games.breakfree.entities;
+package catalinc.games.breakfree.world.entities;
 
 public class Brick extends GameObject {
     private float strength;

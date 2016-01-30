@@ -1,11 +1,8 @@
-package catalinc.games.breakfree.components;
+package catalinc.games.breakfree.world;
 
-import catalinc.games.breakfree.entities.Ball;
-import catalinc.games.breakfree.entities.Brick;
-import catalinc.games.breakfree.entities.Player;
-import catalinc.games.breakfree.world.Event;
-import catalinc.games.breakfree.world.Level;
-import catalinc.games.breakfree.world.World;
+import catalinc.games.breakfree.world.entities.Ball;
+import catalinc.games.breakfree.world.entities.Brick;
+import catalinc.games.breakfree.world.entities.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;

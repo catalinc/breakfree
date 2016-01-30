@@ -1,4 +1,4 @@
-package catalinc.games.breakfree.entities;
+package catalinc.games.breakfree.world.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;

@@ -1,4 +1,4 @@
-package catalinc.games.breakfree.entities;
+package catalinc.games.breakfree.world.entities;
 
 /** The paddle. */
 public class Player extends GameObject {

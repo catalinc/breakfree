@@ -1,11 +1,9 @@
 package catalinc.games.breakfree.world;
 
-import catalinc.games.breakfree.commands.Command;
-import catalinc.games.breakfree.entities.Ball;
-import catalinc.games.breakfree.entities.Brick;
-import catalinc.games.breakfree.entities.Player;
+import catalinc.games.breakfree.world.entities.Ball;
+import catalinc.games.breakfree.world.entities.Brick;
+import catalinc.games.breakfree.world.entities.Player;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
@@ -14,7 +12,6 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Queue;
 
 /**
  * Handles state, physics and level loading.
@@ -39,7 +36,6 @@ public class World {
     private final String fontPath;
 
     private final List<Observer> observers;
-    private final Queue<Command> commands;
 
     private boolean paused;
 
@@ -67,7 +63,6 @@ public class World {
         fontPath = props.getProperty("game.ui.font");
 
         observers = new LinkedList<>();
-        commands = new LinkedList<>();
 
         player = new Player();
         ball = new Ball();
@@ -138,16 +133,7 @@ public class World {
         observers.add(observer);
     }
 
-    public void addCommand(Command command) {
-        commands.add(command);
-    }
-
     public void update(float delta) {
-        while (!commands.isEmpty()) {
-            Command command = commands.poll();
-            command.execute(this);
-        }
-
         if (paused) return;
 
         ball.update(delta);

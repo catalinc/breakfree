@@ -1,7 +1,5 @@
-package catalinc.games.breakfree.components;
+package catalinc.games.breakfree.world;
 
-import catalinc.games.breakfree.world.Event;
-import catalinc.games.breakfree.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
@@ -53,5 +51,9 @@ public class AudioPlayer implements World.Observer {
 
     public void unmute() {
         muted = false;
+    }
+
+    public boolean isMuted() {
+        return muted;
     }
 }

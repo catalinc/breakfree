@@ -1,28 +1,54 @@
 package catalinc.games.breakfree.screens;
 
 import catalinc.games.breakfree.BreakFreeGame;
-import catalinc.games.breakfree.commands.MoveLeftCommand;
-import catalinc.games.breakfree.commands.MoveRightCommand;
-import catalinc.games.breakfree.commands.PauseCommand;
-import catalinc.games.breakfree.commands.ResumeCommand;
+import catalinc.games.breakfree.world.entities.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.Array;
 
 public class GameplayScreen extends GameScreen {
+    private Array<Handler> handlers;
+
     public GameplayScreen(BreakFreeGame game) {
         super(game);
+
+        handlers = new Array<>();
+        handlers.add(new Handler(Input.Keys.LEFT, () -> {
+            float delta = Gdx.graphics.getDeltaTime();
+            Player player = world.getPlayer();
+            player.setVelocity(-player.getSpeed(), 0);
+            player.update(delta);
+            if (player.getX() < 0) {
+                player.setX(0);
+            }
+        }));
+        handlers.add(new Handler(Input.Keys.RIGHT, () -> {
+            float delta = Gdx.graphics.getDeltaTime();
+            Player player = world.getPlayer();
+            player.setVelocity(player.getSpeed(), 0);
+            player.update(delta);
+            if (player.getX() + player.getWidth() > world.getWidth()) {
+                player.setX(world.getWidth() - player.getWidth());
+            }
+        }));
+        handlers.add(new Handler(Input.Keys.M, () -> {
+            if (audioPlayer.isMuted()) {
+                audioPlayer.unmute();
+            } else {
+                audioPlayer.mute();
+            }
+        }));
+        handlers.add(new Handler(Input.Keys.ESCAPE, world::pause));
+        handlers.add(new Handler(Input.Keys.SPACE, world::resume));
     }
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            world.addCommand(new MoveLeftCommand(delta, world.getPlayer()));
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            world.addCommand(new MoveRightCommand(delta, world.getPlayer()));
-        } else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            world.addCommand(new PauseCommand());
-        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            world.addCommand(new ResumeCommand());
+        for (Handler handler : handlers) {
+            if (Gdx.input.isKeyPressed(handler.getKey())) {
+                handler.getAction().execute();
+                break;
+            }
         }
 
         world.update(delta);
