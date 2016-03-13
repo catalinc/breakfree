@@ -27,4 +27,7 @@ _WIP_
 ### Level 1
 
 ![Level 1](https://github.com/catalinc/breakfree/raw/master/level1.png)
+
+### Level 2
+
 ![Level 2](https://github.com/catalinc/breakfree/raw/master/level2.png)
