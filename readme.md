@@ -2,8 +2,6 @@
 
 Retro Breakout clone made with libGDX.
 
-_WIP_
-
 ## Controls
 
 - Space - start/resume
@@ -16,11 +14,6 @@ _WIP_
 - [BasicArkanoidPack](http://opengameart.org/content/basic-arkanoid-pack) by [Zealex](http://opengameart.org/users/zealex)
 - [3 Ping Pong Sounds 8 bit style](http://opengameart.org/content/3-ping-pong-sounds-8-bit-style) by [captaincrunch80](http://opengameart.org/users/captaincrunch80)
 - [Munro font](http://www.fontsquirrel.com/fonts/Munro)
-
-## Todo
-
-- High scores
-- Help screen
 
 ## Screens
 
